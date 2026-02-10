@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Calculator ♥</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --rose: #ff6b9d;
+            --deep-rose: #c44569;
+            --blush: #ffeef8;
+            --cream: #fff5f7;
+            --deep-purple: #543864;
+            --text: #2d1b2e;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, var(--blush) 0%, var(--cream) 50%, #ffe9f0 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        #fireworks-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .bg-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-heart {
+            position: absolute;
+            color: var(--rose);
+            opacity: 0.1;
+            animation: float-up 15s infinite ease-in-out;
+        }
+
+        @keyframes float-up {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.1; }
+            90% { opacity: 0.1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            background: var(--deep-purple);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            background: var(--deep-rose);
+            transform: translateX(-5px);
+        }
+
+        .calculator-container {
+            background: white;
+            border-radius: 25px;
+            padding: 50px;
+            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.2);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .calculator-container h2 {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--deep-rose);
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--deep-rose);
+            margin-bottom: 10px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--rose);
+            border-radius: 10px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--deep-rose);
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+        }
+
+        .calculate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--rose), var(--deep-rose));
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 15px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .calculate-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.3);
+        }
+
+        .love-result {
+            margin-top: 40px;
+            padding: 30px;
+            background: var(--cream);
+            border-radius: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .love-result.show {
+            display: block;
+            animation: scaleIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .love-percentage {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            color: var(--deep-rose);
+            font-weight: 900;
+            margin: 20px 0;
+        }
+
+        .love-message {
+            font-size: 1.3rem;
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .heart-meter {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .heart-meter span {
+            font-size: 2rem;
+        }
+
+        .names-display {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--deep-purple);
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .calculator-container {
+                padding: 30px 20px;
+            }
+
+            .calculator-container h2 {
+                font-size: 2rem;
+            }
+
+            .love-percentage {
+                font-size: 4rem;
+            }
+
+            .heart-meter span {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fireworks-canvas"></canvas>
+    <div class="bg-hearts" id="bgHearts"></div>
+    
+    <div class="container">
+        <a href="index.html" class="back-btn">← Back to Home</a>
+        
+        <div class="calculator-container">
+            <h2>💘 Love Calculator 💘</h2>
+            
+            <div class="input-group">
+                <label for="name1">Your Name</label>
+                <input type="text" id="name1" placeholder="Enter your name (English or 中文)">
+            </div>
+
+            <div class="input-group">
+                <label for="name2">Their Name</label>
+                <input type="text" id="name2" placeholder="Enter their name (English or 中文)">
+            </div>
+
+            <button class="calculate-btn" onclick="calculateLove()">Calculate Love ♥</button>
+
+            <div class="love-result" id="love-result">
+                <div class="names-display" id="names-display"></div>
+                <div class="love-percentage" id="love-percentage"></div>
+                <div class="heart-meter" id="heart-meter"></div>
+                <div class="love-message" id="love-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Background floating hearts
+        function createBgHearts() {
+            const container = document.getElementById('bgHearts');
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'bg-heart';
+                heart.textContent = '♥';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                heart.style.animationDelay = Math.random() * 15 + 's';
+                heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(heart);
+            }
+        }
+        createBgHearts();
+
+        // ========== LOVE CALCULATOR ==========
+        function calculateLove() {
+            const name1 = document.getElementById('name1').value.trim();
+            const name2 = document.getElementById('name2').value.trim();
+            
+            if (!name1 || !name2) {
+                alert('Please enter both names! 请输入两个名字！');
+                return;
+            }
+            
+            // Love calculation algorithm
+            // Works for English and Chinese characters
+            const combined = (name1 + name2).toLowerCase();
+            let hash = 0;
+            
+            for (let i = 0; i < combined.length; i++) {
+                const char = combined.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            
+            // Ensure positive number between 50-100 for better UX
+            let percentage = Math.abs(hash % 51) + 50;
+            
+            // Display names
+            document.getElementById('names-display').innerHTML = `${name1} ♥ ${name2}`;
+            
+            // Display percentage
+            document.getElementById('love-percentage').textContent = percentage + '%';
+            
+            // Heart meter
+            const heartCount = Math.ceil(percentage / 10);
+            let heartMeter = '';
+            for (let i = 0; i < 10; i++) {
+                heartMeter += `<span>${i < heartCount ? '❤️' : '🤍'}</span>`;
+            }
+            document.getElementById('heart-meter').innerHTML = heartMeter;
+            
+            // Love message based on percentage
+            let message = '';
+            if (percentage >= 95) {
+                message = "🎉 Perfect match made in heaven! Your souls are deeply connected. This love is destined to last forever! 天作之合！你们的灵魂深深相连，这份爱注定永恒！";
+            } else if (percentage >= 90) {
+                message = "💕 Exceptional compatibility! You two share a beautiful bond. Your relationship has immense potential for lasting happiness! 极佳的契合度！你们之间有着美好的纽带，关系充满幸福的潜力！";
+            } else if (percentage >= 80) {
+                message = "💖 Great match! You complement each other wonderfully. With care and effort, this love will flourish! 很好的配对！你们彼此互补，用心经营这份爱会开花结果！";
+            } else if (percentage >= 70) {
+                message = "💗 Good compatibility! You have a solid foundation. Nurture your connection and watch it grow stronger! 不错的相容性！你们有坚实的基础，培养感情会让关系更牢固！";
+            } else if (percentage >= 60) {
+                message = "💝 There's potential here! Love can surprise us in unexpected ways. Keep your hearts open and see where the journey takes you! 这里有潜力！爱情会以意想不到的方式给我们惊喜。敞开心扉，看看旅程会带你们去哪里！";
+            } else {
+                message = "💞 Every relationship is unique! With understanding and communication, any connection can grow. Remember, love is what you make of it! 每段关系都是独特的！通过理解和沟通，任何联系都能成长。记住，爱是你创造出来的！";
+            }
+            
+            document.getElementById('love-message').textContent = message;
+            
+            // Show result with animation
+            const resultDiv = document.getElementById('love-result');
+            resultDiv.classList.remove('show');
+            // Trigger reflow
+            void resultDiv.offsetWidth;
+            resultDiv.classList.add('show');
+        }
+
+        // Allow Enter key to calculate
+        document.getElementById('name1').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calculateLove();
+        });
+        
+        document.getElementById('name2').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calculateLove();
+        });
+    </script>
+
+    <script src="fireworks.js"></script>
+    <script>
+        // Initialize fireworks
+        let fireworks = null;
+        window.addEventListener('load', () => {
+            fireworks = initValentineFireworks();
+        });
+    </script>
+</body>
+</html>

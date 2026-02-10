@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Catcher Game ♥</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --rose: #ff6b9d;
+            --deep-rose: #c44569;
+            --blush: #ffeef8;
+            --cream: #fff5f7;
+            --deep-purple: #543864;
+            --text: #2d1b2e;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, var(--blush) 0%, var(--cream) 50%, #ffe9f0 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        #fireworks-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .bg-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-heart {
+            position: absolute;
+            color: var(--rose);
+            opacity: 0.1;
+            animation: float-up 15s infinite ease-in-out;
+        }
+
+        @keyframes float-up {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.1; }
+            90% { opacity: 0.1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .controls-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .sound-toggle, .pause-btn {
+            background: white;
+            border: 2px solid var(--rose);
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .sound-toggle:hover, .pause-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.2);
+        }
+
+        .back-btn {
+            background: var(--deep-purple);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            background: var(--deep-rose);
+            transform: translateX(-5px);
+        }
+
+        .game-info {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.15);
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .game-stat {
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .game-stat-label {
+            font-size: 0.9rem;
+            color: var(--deep-purple);
+            margin-bottom: 5px;
+        }
+
+        .game-stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--deep-rose);
+            font-weight: 700;
+        }
+
+        #game-canvas {
+            background: linear-gradient(180deg, #ffd1dc 0%, #ffb3c6 100%);
+            border-radius: 20px;
+            display: block;
+            margin: 20px auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            cursor: none;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .game-message {
+            background: var(--deep-rose);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .game-message h2 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+
+        .game-message p {
+            font-size: 1.3rem;
+            margin: 10px 0;
+        }
+
+        .restart-btn {
+            background: white;
+            color: var(--deep-rose);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 15px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .restart-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .instructions {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.15);
+        }
+
+        .instructions h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--deep-rose);
+            margin-bottom: 10px;
+        }
+
+        .instructions p {
+            color: var(--deep-purple);
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            #game-canvas {
+                width: 100%;
+            }
+
+            .game-info {
+                padding: 15px;
+            }
+
+            .game-stat-value {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fireworks-canvas"></canvas>
+    <div class="bg-hearts" id="bgHearts"></div>
+    
+    <div class="container">
+        <div class="top-bar">
+            <a href="index.html" class="back-btn">← Back to Home</a>
+            <div class="controls-group">
+                <button class="pause-btn" onclick="togglePause()" id="pauseBtn">
+                    <span id="pauseIcon">⏸️</span>
+                    <span id="pauseText">Pause</span>
+                </button>
+                <button class="sound-toggle" onclick="toggleSound()" id="soundBtn">
+                    <span id="soundIcon">🔊</span>
+                    <span id="soundText">Sound</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>🎮 How to Play</h3>
+            <p>Move your mouse to control the basket. Catch hearts ❤️ to score points. Avoid broken hearts 💔 and clouds ☁️!</p>
+        </div>
+
+        <div class="game-info">
+            <div class="game-stat">
+                <div class="game-stat-label">Hearts Caught</div>
+                <div class="game-stat-value" id="hearts-caught">0</div>
+            </div>
+            <div class="game-stat">
+                <div class="game-stat-label">Hearts Fallen</div>
+                <div class="game-stat-value" id="hearts-fallen">0</div>
+            </div>
+            <div class="game-stat">
+                <div class="game-stat-label">Level</div>
+                <div class="game-stat-value" id="game-level">1</div>
+            </div>
+        </div>
+
+        <canvas id="game-canvas" width="800" height="600"></canvas>
+
+        <div class="game-message" id="game-message"></div>
+    </div>
+
+    <script>
+        // Background floating hearts
+        function createBgHearts() {
+            const container = document.getElementById('bgHearts');
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'bg-heart';
+                heart.textContent = '♥';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                heart.style.animationDelay = Math.random() * 15 + 's';
+                heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(heart);
+            }
+        }
+        createBgHearts();
+
+        // Sound Management
+        let soundEnabled = true;
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(frequency, duration = 100) {
+            if (!soundEnabled) return;
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration / 1000);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration / 1000);
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('soundIcon').textContent = soundEnabled ? '🔊' : '🔇';
+            document.getElementById('soundText').textContent = soundEnabled ? 'Sound' : 'Muted';
+            if (soundEnabled) playSound(600, 100);
+        }
+
+        let gamePaused = false;
+
+        function togglePause() {
+            gamePaused = !gamePaused;
+            document.getElementById('pauseIcon').textContent = gamePaused ? '▶️' : '⏸️';
+            document.getElementById('pauseText').textContent = gamePaused ? 'Resume' : 'Pause';
+            playSound(gamePaused ? 400 : 600, 100);
+        }
+
+        // ========== HEART CATCHER GAME ==========
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let gameRunning = false;
+        let basket = { x: 350, y: 550, width: 100, height: 20 };
+        let hearts = [];
+        let obstacles = [];
+        let heartsCaught = 0;
+        let heartsFallen = 0;
+        let currentLevel = 1;
+        let baseSpeed = 2;
+        let gameInterval;
+        let spawnInterval;
+
+        const levelMessages = [
+            "💔 Love novice - Keep practicing!",
+            "💕 Sweet beginner - You're learning!",
+            "💗 Budding romance - Getting better!",
+            "💖 Love apprentice - Nice progress!",
+            "💝 Romantic soul - Impressive!",
+            "💞 Heart expert - Amazing skills!",
+            "💓 Love master - Incredible!",
+            "❤️ Romance champion - Outstanding!",
+            "💯 Perfect lover - Almost there!",
+            "👑 LOVE LEGEND - PERFECT SCORE! 👑"
+        ];
+
+        function startGame() {
+            if (gameRunning) return;
+            gameRunning = true;
+            heartsCaught = 0;
+            heartsFallen = 0;
+            currentLevel = 1;
+            hearts = [];
+            obstacles = [];
+            basket.x = 350;
+            document.getElementById('game-message').style.display = 'none';
+            updateGameStats();
+            
+            gameInterval = setInterval(gameLoop, 1000/60);
+            spawnInterval = setInterval(spawnObjects, 800);
+            
+            canvas.addEventListener('mousemove', moveBasket);
+        }
+
+        function stopGame() {
+            gameRunning = false;
+            clearInterval(gameInterval);
+            clearInterval(spawnInterval);
+            canvas.removeEventListener('mousemove', moveBasket);
+        }
+
+        function moveBasket(e) {
+            const rect = canvas.getBoundingClientRect();
+            basket.x = e.clientX - rect.left - basket.width / 2;
+            basket.x = Math.max(0, Math.min(canvas.width - basket.width, basket.x));
+        }
+
+        function spawnObjects() {
+            if (heartsFallen >= 50) return;
+            
+            // Spawn heart
+            hearts.push({
+                x: Math.random() * (canvas.width - 30),
+                y: -30,
+                size: 30,
+                speed: baseSpeed + (currentLevel - 1) * 0.5,
+                type: 'heart'
+            });
+
+            // Spawn obstacles (broken hearts, clouds, etc.)
+            if (Math.random() > 0.6) {
+                obstacles.push({
+                    x: Math.random() * (canvas.width - 30),
+                    y: -30,
+                    size: 30,
+                    speed: baseSpeed + (currentLevel - 1) * 0.5,
+                    type: Math.random() > 0.5 ? 'broken' : 'cloud'
+                });
+            }
+        }
+
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (gamePaused) {
+                // Draw pause overlay
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'white';
+                ctx.font = '48px Playfair Display';
+                ctx.textAlign = 'center';
+                ctx.fillText('PAUSED', canvas.width / 2, canvas.height / 2);
+                ctx.font = '24px Cormorant Garamond';
+                ctx.fillText('Click Resume to continue', canvas.width / 2, canvas.height / 2 + 50);
+                return;
+            }
+            
+            // Draw basket
+            ctx.fillStyle = '#ff6b9d';
+            ctx.fillRect(basket.x, basket.y, basket.width, basket.height);
+            ctx.fillStyle = '#c44569';
+            ctx.fillRect(basket.x, basket.y, basket.width, 5);
+            
+            // Update and draw hearts
+            for (let i = hearts.length - 1; i >= 0; i--) {
+                const heart = hearts[i];
+                heart.y += heart.speed;
+                
+                // Draw heart
+                ctx.font = `${heart.size}px Arial`;
+                ctx.fillText('❤️', heart.x, heart.y);
+                
+                // Check collision with basket
+                if (heart.y + heart.size > basket.y &&
+                    heart.y < basket.y + basket.height &&
+                    heart.x + heart.size > basket.x &&
+                    heart.x < basket.x + basket.width) {
+                    hearts.splice(i, 1);
+                    heartsCaught++;
+                    heartsFallen++;
+                    playSound(1000 + heartsCaught * 50, 150); // Rising pitch with each catch
+                    updateLevel();
+                    updateGameStats();
+                    continue;
+                }
+                
+                // Remove if off screen
+                if (heart.y > canvas.height) {
+                    hearts.splice(i, 1);
+                    heartsFallen++;
+                    updateLevel();
+                    updateGameStats();
+                }
+            }
+            
+            // Update and draw obstacles
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                const obs = obstacles[i];
+                obs.y += obs.speed;
+                
+                // Draw obstacle
+                ctx.font = `${obs.size}px Arial`;
+                ctx.fillText(obs.type === 'broken' ? '💔' : '☁️', obs.x, obs.y);
+                
+                // Check collision with basket (penalty)
+                if (obs.y + obs.size > basket.y &&
+                    obs.y < basket.y + basket.height &&
+                    obs.x + obs.size > basket.x &&
+                    obs.x < basket.x + basket.width) {
+                    obstacles.splice(i, 1);
+                    if (heartsCaught > 0) {
+                        heartsCaught--;
+                        playSound(200, 200); // Low sad sound
+                    }
+                    updateGameStats();
+                    continue;
+                }
+                
+                // Remove if off screen
+                if (obs.y > canvas.height) {
+                    obstacles.splice(i, 1);
+                }
+            }
+            
+            // Check game end
+            if (heartsFallen >= 50) {
+                endGame();
+            }
+        }
+
+        function updateLevel() {
+            const newLevel = Math.floor(heartsFallen / 5) + 1;
+            if (newLevel !== currentLevel && newLevel <= 10) {
+                currentLevel = newLevel;
+                playSound(1500, 300); // Level up sound
+            }
+        }
+
+        function updateGameStats() {
+            document.getElementById('hearts-caught').textContent = heartsCaught;
+            document.getElementById('hearts-fallen').textContent = heartsFallen;
+            document.getElementById('game-level').textContent = currentLevel;
+        }
+
+        function endGame() {
+            stopGame();
+            const messageIdx = Math.floor((heartsCaught / 50) * 10);
+            const finalMessageIdx = Math.min(messageIdx, levelMessages.length - 1);
+            const message = levelMessages[finalMessageIdx];
+            
+            // Victory or defeat sound
+            if (heartsCaught >= 40) {
+                playSound(800, 200);
+                setTimeout(() => playSound(1000, 200), 200);
+                setTimeout(() => playSound(1200, 300), 400);
+            } else {
+                playSound(300, 400);
+            }
+            
+            const gameMessage = document.getElementById('game-message');
+            gameMessage.innerHTML = `
+                <h2>🎮 Game Over! 🎮</h2>
+                <p style="font-size: 1.5rem; margin: 10px 0;">You caught <strong>${heartsCaught}</strong> out of 50 hearts!</p>
+                <p style="font-size: 1.3rem; margin-top: 15px;">${message}</p>
+                <button class="restart-btn" onclick="startGame()">Play Again ♥</button>
+            `;
+            gameMessage.style.display = 'block';
+        }
+
+        // Auto-start game when page loads
+        window.addEventListener('load', () => {
+            setTimeout(startGame, 500);
+        });
+    </script>
+
+    <script src="fireworks.js"></script>
+    <script>
+        // Initialize fireworks
+        let fireworks = null;
+        window.addEventListener('load', () => {
+            fireworks = initValentineFireworks();
+        });
+    </script>
+</body>
+</html>
