@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will You Be My Valentine? ♥</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cormorant+Garamond:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -22,12 +22,13 @@
         }
 
         body {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Cormorant Garamond', 'Noto Sans TC', serif;
             background: linear-gradient(135deg, var(--blush) 0%, var(--cream) 50%, #ffe9f0 100%);
             color: var(--text);
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 20px;
             overflow: hidden;
+            position: relative;
         }
 
         #fireworks-canvas {
@@ -68,26 +69,29 @@
         .container {
             position: relative;
             z-index: 10;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
+            height: calc(100vh - 40px);
+            display: flex;
+            flex-direction: column;
         }
 
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
             gap: 15px;
         }
 
-        .back-btn, .home-btn {
+        .home-btn {
             background: var(--deep-purple);
             color: white;
             border: none;
             padding: 12px 30px;
             border-radius: 30px;
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Cormorant Garamond', 'Noto Sans TC', serif;
             font-size: 1.1rem;
             cursor: pointer;
             transition: all 0.3s;
@@ -95,7 +99,7 @@
             display: inline-block;
         }
 
-        .back-btn:hover, .home-btn:hover {
+        .home-btn:hover {
             background: var(--deep-rose);
             transform: translateX(-5px);
         }
@@ -111,7 +115,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Cormorant Garamond', 'Noto Sans TC', serif;
         }
 
         .sound-toggle:hover {
@@ -122,10 +126,10 @@
         .game-container {
             background: white;
             border-radius: 25px;
-            padding: 80px 50px;
+            padding: 60px 40px;
             box-shadow: 0 15px 40px rgba(255, 107, 157, 0.2);
             text-align: center;
-            min-height: 500px;
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -140,7 +144,7 @@
         }
 
         .proposal-emoji {
-            font-size: 8rem;
+            font-size: 6rem;
             margin-bottom: 30px;
             animation: heartbeat 1.5s infinite;
         }
@@ -152,27 +156,24 @@
         }
 
         .proposal-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
+            font-family: 'Playfair Display', 'Noto Sans TC', serif;
+            font-size: 3rem;
             color: var(--deep-rose);
             margin-bottom: 50px;
             font-weight: 900;
             line-height: 1.2;
         }
 
-        .button-container {
-            display: flex;
-            gap: 30px;
-            justify-content: center;
-            align-items: center;
+        .button-area {
             position: relative;
             width: 100%;
-            height: 100px;
+            height: 300px;
+            margin-top: 30px;
         }
 
-        .yes-btn, .no-btn {
+        .yes-btn {
             padding: 20px 60px;
-            font-family: 'Playfair Display', serif;
+            font-family: 'Playfair Display', 'Noto Sans TC', serif;
             font-size: 1.8rem;
             font-weight: 700;
             border: none;
@@ -180,23 +181,34 @@
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .yes-btn {
             background: linear-gradient(135deg, #ff1493, #ff69b4);
             color: white;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
         }
 
         .yes-btn:hover {
-            transform: scale(1.1);
+            transform: translate(-50%, -50%) scale(1.1);
             box-shadow: 0 10px 30px rgba(255, 20, 147, 0.4);
         }
 
         .no-btn {
+            padding: 20px 60px;
+            font-family: 'Playfair Display', 'Noto Sans TC', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
             background: var(--cream);
             color: var(--deep-purple);
             border: 3px solid var(--deep-purple);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             position: absolute;
+            z-index: 5;
         }
 
         .no-btn:hover {
@@ -218,18 +230,18 @@
         }
 
         .result-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
+            font-family: 'Playfair Display', 'Noto Sans TC', serif;
+            font-size: 2.8rem;
             color: var(--deep-rose);
             margin-bottom: 30px;
             font-weight: 900;
         }
 
         .result-message {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             line-height: 1.8;
             color: var(--text);
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             max-width: 600px;
         }
 
@@ -244,7 +256,7 @@
             padding: 15px 35px;
             border: none;
             border-radius: 30px;
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Cormorant Garamond', 'Noto Sans TC', serif;
             font-size: 1.2rem;
             cursor: pointer;
             transition: all 0.3s;
@@ -273,7 +285,7 @@
             background: var(--cream);
             padding: 10px 20px;
             border-radius: 20px;
-            font-family: 'Playfair Display', serif;
+            font-family: 'Playfair Display', 'Noto Sans TC', serif;
             font-size: 1.2rem;
             color: var(--deep-purple);
         }
@@ -281,15 +293,14 @@
         @media (max-width: 768px) {
             .game-container {
                 padding: 40px 20px;
-                min-height: 400px;
             }
 
             .proposal-emoji {
-                font-size: 5rem;
+                font-size: 4rem;
             }
 
             .proposal-text {
-                font-size: 2.5rem;
+                font-size: 2rem;
             }
 
             .yes-btn, .no-btn {
@@ -304,6 +315,10 @@
             .result-message {
                 font-size: 1.2rem;
             }
+
+            .button-area {
+                height: 250px;
+            }
         }
     </style>
 </head>
@@ -313,20 +328,19 @@
     
     <div class="container">
         <div class="top-bar">
-            <a href="index.html" class="home-btn">🏠 Home</a>
+            <a href="index.html" class="home-btn">🏠 <span class="lang-text" data-en="Home" data-zh="首頁">Home</span></a>
             <button class="sound-toggle" onclick="toggleSound()" id="soundBtn">
                 <span id="soundIcon">🔊</span>
-                <span id="soundText">Sound On</span>
             </button>
         </div>
 
         <div class="game-container" id="gameContent">
-            <div class="attempt-counter" id="attemptCounter">No escapes: 0</div>
+            <div class="attempt-counter" id="attemptCounter"><span class="lang-text" data-en="No escapes" data-zh="逃跑次數">No escapes</span>: 0</div>
             <div class="proposal-emoji">💝</div>
-            <h1 class="proposal-text">Will You Be My Valentine?</h1>
-            <div class="button-container" id="buttonContainer">
-                <button class="yes-btn" onclick="clickYes()">Yes! ❤️</button>
-                <button class="no-btn" id="noBtn" onclick="clickNo()">No</button>
+            <h1 class="proposal-text lang-text" data-en="Will You Be My Valentine?" data-zh="你願意做我的情人嗎？">Will You Be My Valentine?</h1>
+            <div class="button-area" id="buttonArea">
+                <button class="yes-btn" onclick="clickYes()"><span class="lang-text" data-en="Yes! ❤️" data-zh="好啊！ ❤️">Yes! ❤️</span></button>
+                <button class="no-btn" id="noBtn" onclick="clickNo()"><span class="lang-text" data-en="No" data-zh="不要">No</span></button>
             </div>
         </div>
     </div>
@@ -354,31 +368,83 @@
 
         function playSound(frequency, duration = 100) {
             if (!soundEnabled) return;
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.value = frequency;
-            oscillator.type = 'sine';
-            
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration / 1000);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + duration / 1000);
+            try {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = frequency;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration / 1000);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration / 1000);
+            } catch(e) {}
         }
 
         function toggleSound() {
             soundEnabled = !soundEnabled;
             document.getElementById('soundIcon').textContent = soundEnabled ? '🔊' : '🔇';
-            document.getElementById('soundText').textContent = soundEnabled ? 'Sound On' : 'Sound Off';
             if (soundEnabled) playSound(600, 100);
         }
 
         // Game Logic
         let noClickCount = 0;
+        let previousPositions = [];
+        const MIN_DISTANCE = 200; // Minimum distance from previous positions
+        const POSITION_MEMORY = 3; // Remember last 3 positions
+
+        function getRandomPosition() {
+            const noBtn = document.getElementById('noBtn');
+            const buttonArea = document.getElementById('buttonArea');
+            const areaRect = buttonArea.getBoundingClientRect();
+            
+            const btnWidth = 200;
+            const btnHeight = 70;
+            
+            const maxX = areaRect.width - btnWidth - 40;
+            const maxY = areaRect.height - btnHeight - 40;
+            
+            let attempts = 0;
+            let newX, newY, isValid;
+            
+            do {
+                newX = 20 + Math.random() * maxX;
+                newY = 20 + Math.random() * maxY;
+                
+                // Check if too close to previous positions
+                isValid = true;
+                for (let pos of previousPositions) {
+                    const distance = Math.sqrt(Math.pow(newX - pos.x, 2) + Math.pow(newY - pos.y, 2));
+                    if (distance < MIN_DISTANCE) {
+                        isValid = false;
+                        break;
+                    }
+                }
+                
+                // Check if overlaps with Yes button (center area)
+                const centerX = areaRect.width / 2;
+                const centerY = areaRect.height / 2;
+                const distanceFromCenter = Math.sqrt(Math.pow(newX - centerX, 2) + Math.pow(newY - centerY, 2));
+                if (distanceFromCenter < 150) {
+                    isValid = false;
+                }
+                
+                attempts++;
+            } while (!isValid && attempts < 50);
+            
+            // Store this position
+            previousPositions.push({ x: newX, y: newY });
+            if (previousPositions.length > POSITION_MEMORY) {
+                previousPositions.shift();
+            }
+            
+            return { x: newX, y: newY };
+        }
 
         function clickYes() {
             playSound(1200, 400);
@@ -387,17 +453,17 @@
             document.getElementById('gameContent').innerHTML = `
                 <div class="result-container">
                     <div class="result-emoji">😅</div>
-                    <h2 class="result-title">Oops! Plot Twist!</h2>
-                    <p class="result-message">
+                    <h2 class="result-title lang-text" data-en="Oops! Plot Twist!" data-zh="哎呀！劇情反轉！">Oops! Plot Twist!</h2>
+                    <p class="result-message lang-text" data-en="Sorry, I changed my mind. I want to take a rest on Feb 14th. But thank you for putting in the effort. You are so kind! 💕" data-zh="抱歉，我改變主意了。我想在2月14日休息一下。但謝謝你的努力。你真好！ 💕">
                         Sorry, I changed my mind. I want to take a rest on Feb 14th. 
                         But thank you for putting in the effort. You are so kind! 💕
                     </p>
-                    <p class="result-message" style="font-size: 1.2rem; color: var(--deep-purple);">
+                    <p class="result-message lang-text" data-en="Just kidding! This was all in good fun. Happy Valentine's Day! 🎉" data-zh="開玩笑的！這一切都是為了好玩。情人節快樂！ 🎉" style="font-size: 1.2rem; color: var(--deep-purple);">
                         Just kidding! This was all in good fun. Happy Valentine's Day! 🎉
                     </p>
                     <div class="action-buttons">
-                        <button class="btn btn-primary" onclick="location.reload()">Try Again</button>
-                        <a href="index.html" class="btn btn-secondary" style="text-decoration: none; display: inline-block;">Back to Home</a>
+                        <button class="btn btn-primary" onclick="location.reload()"><span class="lang-text" data-en="Try Again" data-zh="再試一次">Try Again</span></button>
+                        <a href="index.html" class="btn btn-secondary" style="text-decoration: none; display: inline-block;"><span class="lang-text" data-en="Back to Home" data-zh="返回首頁">Back to Home</span></a>
                     </div>
                 </div>
             `;
@@ -407,23 +473,18 @@
             noClickCount++;
             playSound(400, 200);
             
-            document.getElementById('attemptCounter').textContent = `No escapes: ${noClickCount}`;
+            const counterText = document.querySelector('#attemptCounter .lang-text');
+            counterText.setAttribute('data-en', 'No escapes');
+            counterText.setAttribute('data-zh', '逃跑次數');
+            document.getElementById('attemptCounter').innerHTML = `<span class="lang-text" data-en="No escapes" data-zh="逃跑次數">No escapes</span>: ${noClickCount}`;
             
             const noBtn = document.getElementById('noBtn');
-            const container = document.getElementById('buttonContainer');
-            const containerRect = container.getBoundingClientRect();
-            
-            // Calculate safe boundaries (keep button within container)
-            const maxX = containerRect.width - 150; // button width
-            const maxY = containerRect.height - 60; // button height
-            
-            // Generate random position
-            const randomX = Math.random() * maxX;
-            const randomY = Math.random() * maxY;
+            const pos = getRandomPosition();
             
             // Apply new position
-            noBtn.style.left = randomX + 'px';
-            noBtn.style.top = randomY + 'px';
+            noBtn.style.left = pos.x + 'px';
+            noBtn.style.top = pos.y + 'px';
+            noBtn.style.transform = 'none';
             
             // Add wiggle animation
             noBtn.style.animation = 'none';
@@ -446,9 +507,17 @@
         // Initialize No button position
         window.addEventListener('load', () => {
             const noBtn = document.getElementById('noBtn');
-            noBtn.style.left = '60%';
-            noBtn.style.top = '50%';
-            noBtn.style.transform = 'translate(-50%, -50%)';
+            const buttonArea = document.getElementById('buttonArea');
+            const areaRect = buttonArea.getBoundingClientRect();
+            
+            // Start at bottom right
+            noBtn.style.left = (areaRect.width - 250) + 'px';
+            noBtn.style.top = (areaRect.height - 100) + 'px';
+            
+            previousPositions.push({
+                x: areaRect.width - 250,
+                y: areaRect.height - 100
+            });
         });
     </script>
 
