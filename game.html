@@ -26,7 +26,8 @@
             background: linear-gradient(135deg, var(--blush) 0%, var(--cream) 50%, #ffe9f0 100%);
             color: var(--text);
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 0;
+            overflow: hidden;
         }
 
         #fireworks-canvas {
@@ -67,8 +68,10 @@
         .container {
             position: relative;
             z-index: 10;
-            max-width: 900px;
-            margin: 0 auto;
+            max-width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .top-bar {
@@ -78,68 +81,60 @@
             margin-bottom: 20px;
             flex-wrap: wrap;
             gap: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
         }
 
         .controls-group {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
-        .sound-toggle, .pause-btn {
+        .back-btn, .sound-toggle, .pause-btn {
             background: white;
             border: 2px solid var(--rose);
-            padding: 10px 20px;
+            padding: 8px 20px;
             border-radius: 30px;
             cursor: pointer;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             gap: 8px;
             font-family: 'Cormorant Garamond', serif;
-        }
-
-        .sound-toggle:hover, .pause-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.2);
+            color: var(--deep-purple);
+            text-decoration: none;
         }
 
         .back-btn {
             background: var(--deep-purple);
             color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
-            cursor: pointer;
-            margin-bottom: 30px;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
+            border-color: var(--deep-purple);
         }
 
-        .back-btn:hover {
-            background: var(--deep-rose);
-            transform: translateX(-5px);
+        .back-btn:hover, .sound-toggle:hover, .pause-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.2);
         }
 
         .game-info {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
             display: flex;
             justify-content: space-around;
             box-shadow: 0 5px 15px rgba(255, 107, 157, 0.15);
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 15px;
         }
 
         .game-stat {
             text-align: center;
-            min-width: 120px;
+            min-width: 100px;
         }
 
         .game-stat-label {
@@ -150,29 +145,35 @@
 
         .game-stat-value {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--deep-rose);
             font-weight: 700;
         }
 
+        .canvas-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
         #game-canvas {
             background: linear-gradient(180deg, #ffd1dc 0%, #ffb3c6 100%);
-            border-radius: 20px;
-            display: block;
-            margin: 20px auto;
+            border-radius: 0;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            cursor: none;
-            max-width: 100%;
-            height: auto;
+            touch-action: none;
+            width: 100vw !important;
+            height: calc(100vh - 180px) !important;
         }
 
         .game-message {
             background: var(--deep-rose);
             color: white;
-            padding: 30px;
+            padding: 25px;
             border-radius: 15px;
             text-align: center;
-            margin-top: 20px;
+            margin-top: 15px;
             display: none;
             animation: fadeIn 0.5s ease;
         }
@@ -189,7 +190,7 @@
         }
 
         .game-message p {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             margin: 10px 0;
         }
 
@@ -197,12 +198,12 @@
             background: white;
             color: var(--deep-rose);
             border: none;
-            padding: 15px 40px;
+            padding: 12px 30px;
             border-radius: 15px;
             font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 15px;
             transition: all 0.3s;
         }
 
@@ -211,37 +212,85 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        .instructions {
+        .pause-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pause-overlay.show {
+            display: flex;
+        }
+
+        .pause-menu {
             background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 50px;
+            border-radius: 25px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
-        .instructions h3 {
+        .pause-menu h2 {
             font-family: 'Playfair Display', serif;
+            font-size: 3rem;
             color: var(--deep-rose);
-            margin-bottom: 10px;
+            margin-bottom: 30px;
         }
 
-        .instructions p {
+        .pause-menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .pause-menu-btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pause-menu-btn.resume {
+            background: linear-gradient(135deg, var(--rose), var(--deep-rose));
+            color: white;
+        }
+
+        .pause-menu-btn.menu {
+            background: white;
             color: var(--deep-purple);
-            font-size: 1.1rem;
+            border: 2px solid var(--deep-purple);
+        }
+
+        .pause-menu-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
         }
 
         @media (max-width: 768px) {
-            #game-canvas {
-                width: 100%;
-            }
-
-            .game-info {
-                padding: 15px;
+            .top-bar {
+                padding: 10px;
             }
 
             .game-stat-value {
                 font-size: 1.5rem;
+            }
+
+            .pause-menu {
+                padding: 30px;
+            }
+
+            .pause-menu h2 {
+                font-size: 2rem;
             }
         }
     </style>
@@ -250,24 +299,17 @@
     <canvas id="fireworks-canvas"></canvas>
     <div class="bg-hearts" id="bgHearts"></div>
     
-    <div class="container">
+    <div class="container" id="mainContainer">
         <div class="top-bar">
-            <a href="index.html" class="back-btn">← Back to Home</a>
+            <a href="index.html" class="back-btn">🏠 Home</a>
             <div class="controls-group">
                 <button class="pause-btn" onclick="togglePause()" id="pauseBtn">
                     <span id="pauseIcon">⏸️</span>
-                    <span id="pauseText">Pause</span>
                 </button>
                 <button class="sound-toggle" onclick="toggleSound()" id="soundBtn">
                     <span id="soundIcon">🔊</span>
-                    <span id="soundText">Sound</span>
                 </button>
             </div>
-        </div>
-
-        <div class="instructions">
-            <h3>🎮 How to Play</h3>
-            <p>Move your mouse to control the basket. Catch hearts ❤️ to score points. Avoid broken hearts 💔 and clouds ☁️!</p>
         </div>
 
         <div class="game-info">
@@ -285,9 +327,21 @@
             </div>
         </div>
 
-        <canvas id="game-canvas" width="800" height="600"></canvas>
+        <div class="canvas-wrapper">
+            <canvas id="game-canvas" width="800" height="600"></canvas>
+        </div>
 
         <div class="game-message" id="game-message"></div>
+    </div>
+
+    <div class="pause-overlay" id="pauseOverlay">
+        <div class="pause-menu">
+            <h2>⏸️ PAUSED</h2>
+            <div class="pause-menu-buttons">
+                <button class="pause-menu-btn resume" onclick="togglePause()">▶️ Resume Game</button>
+                <a href="index.html" class="pause-menu-btn menu" style="text-decoration: none; display: block;">🏠 Back to Menu</a>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -313,26 +367,27 @@
 
         function playSound(frequency, duration = 100) {
             if (!soundEnabled) return;
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.value = frequency;
-            oscillator.type = 'sine';
-            
-            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration / 1000);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + duration / 1000);
+            try {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = frequency;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration / 1000);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration / 1000);
+            } catch(e) {}
         }
 
         function toggleSound() {
             soundEnabled = !soundEnabled;
             document.getElementById('soundIcon').textContent = soundEnabled ? '🔊' : '🔇';
-            document.getElementById('soundText').textContent = soundEnabled ? 'Sound' : 'Muted';
             if (soundEnabled) playSound(600, 100);
         }
 
@@ -341,7 +396,7 @@
         function togglePause() {
             gamePaused = !gamePaused;
             document.getElementById('pauseIcon').textContent = gamePaused ? '▶️' : '⏸️';
-            document.getElementById('pauseText').textContent = gamePaused ? 'Resume' : 'Pause';
+            document.getElementById('pauseOverlay').classList.toggle('show', gamePaused);
             playSound(gamePaused ? 400 : 600, 100);
         }
 
@@ -350,7 +405,7 @@
         const ctx = canvas.getContext('2d');
         
         let gameRunning = false;
-        let basket = { x: 350, y: 550, width: 100, height: 20 };
+        let basket = { x: 350, y: 550, width: 150, height: 30 }; // Larger basket
         let hearts = [];
         let obstacles = [];
         let heartsCaught = 0;
@@ -373,6 +428,14 @@
             "👑 LOVE LEGEND - PERFECT SCORE! 👑"
         ];
 
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight - 180;
+            
+            basket.y = canvas.height - 50;
+            basket.x = canvas.width / 2 - basket.width / 2;
+        }
+
         function startGame() {
             if (gameRunning) return;
             gameRunning = true;
@@ -381,14 +444,18 @@
             currentLevel = 1;
             hearts = [];
             obstacles = [];
-            basket.x = 350;
-            document.getElementById('game-message').style.display = 'none';
+            resizeCanvas();
             updateGameStats();
             
             gameInterval = setInterval(gameLoop, 1000/60);
             spawnInterval = setInterval(spawnObjects, 800);
             
+            // Mouse support
             canvas.addEventListener('mousemove', moveBasket);
+            
+            // Touch support for mobile
+            canvas.addEventListener('touchmove', handleTouch);
+            canvas.addEventListener('touchstart', handleTouch);
         }
 
         function stopGame() {
@@ -396,6 +463,8 @@
             clearInterval(gameInterval);
             clearInterval(spawnInterval);
             canvas.removeEventListener('mousemove', moveBasket);
+            canvas.removeEventListener('touchmove', handleTouch);
+            canvas.removeEventListener('touchstart', handleTouch);
         }
 
         function moveBasket(e) {
@@ -404,8 +473,16 @@
             basket.x = Math.max(0, Math.min(canvas.width - basket.width, basket.x));
         }
 
+        function handleTouch(e) {
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            basket.x = touch.clientX - rect.left - basket.width / 2;
+            basket.x = Math.max(0, Math.min(canvas.width - basket.width, basket.x));
+        }
+
         function spawnObjects() {
-            if (heartsFallen >= 50) return;
+            if (heartsFallen >= 50 || gamePaused) return;
             
             // Spawn heart
             hearts.push({
@@ -416,7 +493,7 @@
                 type: 'heart'
             });
 
-            // Spawn obstacles (broken hearts, clouds, etc.)
+            // Spawn obstacles
             if (Math.random() > 0.6) {
                 obstacles.push({
                     x: Math.random() * (canvas.width - 30),
@@ -429,26 +506,20 @@
         }
 
         function gameLoop() {
+            if (gamePaused) return;
+            
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            if (gamePaused) {
-                // Draw pause overlay
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = 'white';
-                ctx.font = '48px Playfair Display';
-                ctx.textAlign = 'center';
-                ctx.fillText('PAUSED', canvas.width / 2, canvas.height / 2);
-                ctx.font = '24px Cormorant Garamond';
-                ctx.fillText('Click Resume to continue', canvas.width / 2, canvas.height / 2 + 50);
-                return;
-            }
-            
-            // Draw basket
+            // Draw basket - larger and more visible
             ctx.fillStyle = '#ff6b9d';
             ctx.fillRect(basket.x, basket.y, basket.width, basket.height);
             ctx.fillStyle = '#c44569';
-            ctx.fillRect(basket.x, basket.y, basket.width, 5);
+            ctx.fillRect(basket.x, basket.y, basket.width, 8);
+            
+            // Draw basket border for better visibility
+            ctx.strokeStyle = '#c44569';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(basket.x, basket.y, basket.width, basket.height);
             
             // Update and draw hearts
             for (let i = hearts.length - 1; i >= 0; i--) {
@@ -467,7 +538,7 @@
                     hearts.splice(i, 1);
                     heartsCaught++;
                     heartsFallen++;
-                    playSound(1000 + heartsCaught * 50, 150); // Rising pitch with each catch
+                    playSound(1000 + heartsCaught * 50, 150);
                     updateLevel();
                     updateGameStats();
                     continue;
@@ -499,7 +570,7 @@
                     obstacles.splice(i, 1);
                     if (heartsCaught > 0) {
                         heartsCaught--;
-                        playSound(200, 200); // Low sad sound
+                        playSound(200, 200);
                     }
                     updateGameStats();
                     continue;
@@ -521,7 +592,7 @@
             const newLevel = Math.floor(heartsFallen / 5) + 1;
             if (newLevel !== currentLevel && newLevel <= 10) {
                 currentLevel = newLevel;
-                playSound(1500, 300); // Level up sound
+                playSound(1500, 300);
             }
         }
 
@@ -555,6 +626,29 @@
             `;
             gameMessage.style.display = 'block';
         }
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            if (gameRunning) {
+                resizeCanvas();
+            }
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            stopGame();
+            if (fireworks) {
+                fireworks.destroy();
+            }
+        });
+
+        // Cleanup when navigating away
+        window.addEventListener('pagehide', () => {
+            stopGame();
+            if (fireworks) {
+                fireworks.destroy();
+            }
+        });
 
         // Auto-start game when page loads
         window.addEventListener('load', () => {
