@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Love Fortune Quiz ♥</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght:400;700;900&family=Cormorant+Garamond:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -22,7 +22,7 @@
         }
 
         body {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Cormorant Garamond', 'Noto Sans TC', serif;
             background: linear-gradient(135deg, var(--blush) 0%, var(--cream) 50%, #ffe9f0 100%);
             color: var(--text);
             min-height: 100vh;
@@ -76,6 +76,14 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .controls-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .back-btn {
@@ -84,7 +92,7 @@
             border: none;
             padding: 12px 30px;
             border-radius: 30px;
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Cormorant Garamond', 'Noto Sans TC', serif;
             font-size: 1.1rem;
             cursor: pointer;
             transition: all 0.3s;
@@ -97,20 +105,20 @@
             transform: translateX(-5px);
         }
 
-        .sound-toggle {
+        .sound-toggle, .lang-toggle {
             background: white;
             border: 2px solid var(--rose);
             padding: 10px 20px;
             border-radius: 30px;
             cursor: pointer;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .sound-toggle:hover {
+        .sound-toggle:hover, .lang-toggle:hover {
             transform: scale(1.05);
             box-shadow: 0 5px 15px rgba(255, 107, 157, 0.2);
         }
@@ -145,7 +153,7 @@
         }
 
         .progress-text {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Playfair Display', 'Noto Sans TC', serif;
             font-size: 1.2rem;
             color: var(--deep-purple);
             margin-bottom: 15px;
@@ -153,7 +161,7 @@
         }
 
         .question {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Playfair Display', 'Noto Sans TC', serif;
             font-size: 2rem;
             color: var(--deep-rose);
             margin-bottom: 30px;
@@ -175,7 +183,6 @@
             transition: all 0.3s;
             font-size: 1.2rem;
             text-align: center;
-            position: relative;
         }
 
         .option:hover {
@@ -195,13 +202,14 @@
             gap: 15px;
             margin-top: 30px;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         .btn {
             padding: 15px 35px;
             border: none;
             border-radius: 30px;
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Cormorant Garamond', 'Noto Sans TC', serif;
             font-size: 1.2rem;
             cursor: pointer;
             transition: all 0.3s;
@@ -251,14 +259,14 @@
         }
 
         .result-container h2 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Playfair Display', 'Noto Sans TC', serif;
             font-size: 2.5rem;
             color: var(--deep-rose);
             margin-bottom: 20px;
         }
 
         .result-score {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Playfair Display', 'Noto Sans TC', serif;
             font-size: 1.8rem;
             color: var(--deep-purple);
             margin-bottom: 20px;
@@ -279,7 +287,7 @@
         }
 
         .dashboard-title {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Playfair Display', 'Noto Sans TC', serif;
             font-size: 1.8rem;
             color: var(--deep-rose);
             text-align: center;
@@ -308,7 +316,7 @@
         }
 
         .stat-value {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Playfair Display', 'Noto Sans TC', serif;
             font-size: 2rem;
             color: var(--deep-rose);
             font-weight: 700;
@@ -330,38 +338,6 @@
             color: var(--deep-rose);
         }
 
-        .share-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .share-btn {
-            padding: 12px 25px;
-            border-radius: 25px;
-            border: none;
-            cursor: pointer;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-        }
-
-        .share-btn.twitter {
-            background: #1DA1F2;
-            color: white;
-        }
-
-        .share-btn.facebook {
-            background: #4267B2;
-            color: white;
-        }
-
-        .share-btn.copy {
-            background: var(--deep-purple);
-            color: white;
-        }
-
         @media (max-width: 768px) {
             .quiz-container {
                 padding: 30px 20px;
@@ -377,8 +353,7 @@
             }
 
             .top-bar {
-                flex-direction: column;
-                gap: 15px;
+                justify-content: center;
             }
 
             .stats-grid {
@@ -393,11 +368,16 @@
     
     <div class="container">
         <div class="top-bar">
-            <a href="index.html" class="back-btn">← Back to Home</a>
-            <button class="sound-toggle" onclick="toggleSound()" id="soundBtn">
-                <span id="soundIcon">🔊</span>
-                <span id="soundText">Sound On</span>
-            </button>
+            <a href="index.html" class="back-btn">← <span class="lang-text" data-en="Back to Home" data-zh="返回首页">Back to Home</span></a>
+            <div class="controls-group">
+                <button class="lang-toggle" onclick="toggleLanguage()" id="langBtn">
+                    <span id="langIcon">🌐</span>
+                    <span id="langText">中文</span>
+                </button>
+                <button class="sound-toggle" onclick="toggleSound()" id="soundBtn">
+                    <span id="soundIcon">🔊</span>
+                </button>
+            </div>
         </div>
         <div class="quiz-container" id="quiz-content"></div>
     </div>
@@ -419,107 +399,127 @@
         }
         createBgHearts();
 
+        // Language Management
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'zh' : 'en';
+            document.getElementById('langText').textContent = currentLang === 'en' ? '中文' : 'English';
+            updateLanguage();
+            // Refresh current question
+            if (currentQuestion < quizQuestions.length) {
+                showQuestion();
+            }
+        }
+
+        function updateLanguage() {
+            document.querySelectorAll('.lang-text').forEach(el => {
+                el.textContent = el.getAttribute(`data-${currentLang}`);
+            });
+        }
+
         // Sound Management
         let soundEnabled = true;
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
         function playSound(frequency, duration = 100) {
             if (!soundEnabled) return;
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.value = frequency;
-            oscillator.type = 'sine';
-            
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration / 1000);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + duration / 1000);
+            try {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = frequency;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration / 1000);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration / 1000);
+            } catch(e) {}
         }
 
         function toggleSound() {
             soundEnabled = !soundEnabled;
             document.getElementById('soundIcon').textContent = soundEnabled ? '🔊' : '🔇';
-            document.getElementById('soundText').textContent = soundEnabled ? 'Sound On' : 'Sound Off';
             if (soundEnabled) playSound(600, 100);
         }
 
-        // Quiz Questions with scoring
+        // Quiz Questions (randomized order)
         const quizQuestions = [
             {
-                question: "How do you feel about commitment?",
+                question: { en: "How do you feel about commitment?", zh: "你對承諾的感覺如何？" },
                 options: [
-                    { text: "I'm ready for a serious, long-term relationship", score: 5 },
-                    { text: "I'm open to it with the right person", score: 4 },
-                    { text: "I prefer to take things slow", score: 3 },
-                    { text: "Commitment scares me", score: 1 }
+                    { text: { en: "I'm ready for a serious, long-term relationship", zh: "我準備好認真的長期關係" }, score: 5 },
+                    { text: { en: "I'm open to it with the right person", zh: "遇到對的人我願意" }, score: 4 },
+                    { text: { en: "I prefer to take things slow", zh: "我喜歡慢慢來" }, score: 3 },
+                    { text: { en: "Commitment scares me", zh: "承諾讓我害怕" }, score: 1 }
                 ]
             },
             {
-                question: "What's your ideal Valentine's Day date?",
+                question: { en: "What's your ideal Valentine's Day date?", zh: "你理想的情人節約會是什麼？" },
                 options: [
-                    { text: "Romantic candlelit dinner", score: 5 },
-                    { text: "Adventure and outdoor activities", score: 4 },
-                    { text: "Cozy movie night at home", score: 3 },
-                    { text: "I'd rather stay single", score: 1 }
+                    { text: { en: "Romantic candlelit dinner", zh: "浪漫燭光晚餐" }, score: 5 },
+                    { text: { en: "Adventure and outdoor activities", zh: "冒險和戶外活動" }, score: 4 },
+                    { text: { en: "Cozy movie night at home", zh: "在家看電影" }, score: 3 },
+                    { text: { en: "I'd rather stay single", zh: "我寧願保持單身" }, score: 1 }
                 ]
             },
             {
-                question: "How do you express love?",
+                question: { en: "How do you express love?", zh: "你如何表達愛？" },
                 options: [
-                    { text: "Through heartfelt words and affection", score: 5 },
-                    { text: "With thoughtful gifts and gestures", score: 4 },
-                    { text: "Quality time together", score: 4 },
-                    { text: "I don't really express love", score: 1 }
+                    { text: { en: "Through heartfelt words and affection", zh: "通過真誠的話語和愛意" }, score: 5 },
+                    { text: { en: "With thoughtful gifts and gestures", zh: "用心的禮物和行動" }, score: 4 },
+                    { text: { en: "Quality time together", zh: "一起度過美好時光" }, score: 4 },
+                    { text: { en: "I don't really express love", zh: "我不太表達愛" }, score: 1 }
                 ]
             },
             {
-                question: "What matters most in a relationship?",
+                question: { en: "What matters most in a relationship?", zh: "戀愛中什麼最重要？" },
                 options: [
-                    { text: "Trust and loyalty", score: 5 },
-                    { text: "Passion and chemistry", score: 4 },
-                    { text: "Fun and adventure", score: 3 },
-                    { text: "Personal freedom", score: 1 }
+                    { text: { en: "Trust and loyalty", zh: "信任和忠誠" }, score: 5 },
+                    { text: { en: "Passion and chemistry", zh: "激情和化學反應" }, score: 4 },
+                    { text: { en: "Fun and adventure", zh: "樂趣和冒險" }, score: 3 },
+                    { text: { en: "Personal freedom", zh: "個人自由" }, score: 1 }
                 ]
             },
             {
-                question: "How do you handle conflicts in relationships?",
+                question: { en: "How do you handle conflicts in relationships?", zh: "你如何處理感情中的衝突？" },
                 options: [
-                    { text: "Talk it through with understanding", score: 5 },
-                    { text: "Take time to cool off, then discuss", score: 4 },
-                    { text: "Avoid confrontation", score: 2 },
-                    { text: "End things if there's too much drama", score: 1 }
+                    { text: { en: "Talk it through with understanding", zh: "理解地溝通" }, score: 5 },
+                    { text: { en: "Take time to cool off, then discuss", zh: "冷靜後再討論" }, score: 4 },
+                    { text: { en: "Avoid confrontation", zh: "避免對抗" }, score: 2 },
+                    { text: { en: "End things if there's too much drama", zh: "太多戲劇性就結束" }, score: 1 }
                 ]
             },
             {
-                question: "Your perfect partner is:",
+                question: { en: "Your perfect partner is:", zh: "你的完美伴侶是：" },
                 options: [
-                    { text: "My soulmate who completes me", score: 5 },
-                    { text: "Someone who shares my values", score: 4 },
-                    { text: "A fun companion for adventures", score: 3 },
-                    { text: "I don't believe in 'the one'", score: 1 }
+                    { text: { en: "My soulmate who completes me", zh: "完整我的靈魂伴侶" }, score: 5 },
+                    { text: { en: "Someone who shares my values", zh: "與我價值觀相同的人" }, score: 4 },
+                    { text: { en: "A fun companion for adventures", zh: "冒險的有趣夥伴" }, score: 3 },
+                    { text: { en: "I don't believe in 'the one'", zh: "我不相信命中註定" }, score: 1 }
                 ]
             },
             {
-                question: "How important is romance to you?",
+                question: { en: "How important is romance to you?", zh: "浪漫對你有多重要？" },
                 options: [
-                    { text: "Extremely - it's the heart of love", score: 5 },
-                    { text: "Very important but not everything", score: 4 },
-                    { text: "Nice to have occasionally", score: 2 },
-                    { text: "Romance is overrated", score: 1 }
+                    { text: { en: "Extremely - it's the heart of love", zh: "非常重要 - 這是愛的核心" }, score: 5 },
+                    { text: { en: "Very important but not everything", zh: "很重要但不是全部" }, score: 4 },
+                    { text: { en: "Nice to have occasionally", zh: "偶爾有就好" }, score: 2 },
+                    { text: { en: "Romance is overrated", zh: "浪漫被高估了" }, score: 1 }
                 ]
             },
             {
-                question: "What's your view on love at first sight?",
+                question: { en: "What's your view on love at first sight?", zh: "你對一見鍾情的看法？" },
                 options: [
-                    { text: "I believe in it wholeheartedly", score: 5 },
-                    { text: "It's possible with strong chemistry", score: 4 },
-                    { text: "Love takes time to develop", score: 3 },
-                    { text: "It's just physical attraction", score: 1 }
+                    { text: { en: "I believe in it wholeheartedly", zh: "我全心相信" }, score: 5 },
+                    { text: { en: "It's possible with strong chemistry", zh: "強烈的化學反應可能" }, score: 4 },
+                    { text: { en: "Love takes time to develop", zh: "愛需要時間培養" }, score: 3 },
+                    { text: { en: "It's just physical attraction", zh: "只是身體吸引力" }, score: 1 }
                 ]
             }
         ];
@@ -527,38 +527,38 @@
         const quizResults = [
             {
                 scoreRange: [0, 12],
-                title: "💔 Single Forever",
+                title: { en: "💔 Single Forever", zh: "💔 永遠單身" },
                 icon: "😔",
-                message: "You seem to have built walls around your heart. Love requires vulnerability and openness. Perhaps it's time to reconsider what truly matters in life? Remember, even the coldest hearts can thaw with the right warmth.",
-                advice: "Try opening up to new experiences and people. Love might surprise you when you least expect it!"
+                message: { en: "You seem to have built walls around your heart. Love requires vulnerability and openness. Perhaps it's time to reconsider what truly matters in life? Remember, even the coldest hearts can thaw with the right warmth.", zh: "你似乎在心周圍築起了牆。愛需要脆弱和開放。也許是時候重新考慮生活中真正重要的事情了？記住，即使是最冷的心也能在適當的溫暖下融化。" },
+                advice: { en: "Try opening up to new experiences and people. Love might surprise you when you least expect it!", zh: "嘗試對新體驗和新朋友敞開心扉。愛可能會在你最不期待的時候給你驚喜！" }
             },
             {
                 scoreRange: [13, 20],
-                title: "🌱 Love Skeptic",
+                title: { en: "🌱 Love Skeptic", zh: "🌱 愛情懷疑者" },
                 icon: "🤔",
-                message: "You're hesitant about love, perhaps due to past experiences or personal preferences. While independence is valuable, don't let fear keep you from meaningful connections. Love doesn't always follow a script.",
-                advice: "Take small steps toward opening your heart. Start with friendship and see where it leads."
+                message: { en: "You're hesitant about love, perhaps due to past experiences or personal preferences. While independence is valuable, don't let fear keep you from meaningful connections. Love doesn't always follow a script.", zh: "你對愛情猶豫不決，也許是因為過去的經歷或個人偏好。雖然獨立很寶貴，但不要讓恐懼阻止你建立有意義的聯繫。愛情並不總是按照劇本進行。" },
+                advice: { en: "Take small steps toward opening your heart. Start with friendship and see where it leads.", zh: "邁出小步驟，敞開你的心扉。從友誼開始，看看它會帶你去哪裡。" }
             },
             {
                 scoreRange: [21, 28],
-                title: "💕 Cautious Romantic",
+                title: { en: "💕 Cautious Romantic", zh: "💕 謹慎的浪漫主義者" },
                 icon: "😊",
-                message: "You believe in love but approach it carefully. You're practical yet hopeful, balancing dreams with reality. Your measured approach will help you find someone who truly appreciates you.",
-                advice: "Trust your instincts but don't overthink every moment. Sometimes magic happens when we let our guard down."
+                message: { en: "You believe in love but approach it carefully. You're practical yet hopeful, balancing dreams with reality. Your measured approach will help you find someone who truly appreciates you.", zh: "你相信愛情，但謹慎對待。你既實際又充滿希望，平衡夢想與現實。你謹慎的態度會幫助你找到真正欣賞你的人。" },
+                advice: { en: "Trust your instincts but don't overthink every moment. Sometimes magic happens when we let our guard down.", zh: "相信你的直覺，但不要過度思考每一刻。有時候當我們放下戒備時，魔法就會發生。" }
             },
             {
                 scoreRange: [29, 35],
-                title: "💖 True Romantic",
+                title: { en: "💖 True Romantic", zh: "💖 真正的浪漫主義者" },
                 icon: "😍",
-                message: "Your heart is full of love and hope! You believe in the magic of romance and aren't afraid to express your feelings. Your passionate nature attracts kindred spirits who appreciate genuine affection.",
-                advice: "Keep your beautiful outlook while staying grounded. The perfect balance of romance and reality awaits you!"
+                message: { en: "Your heart is full of love and hope! You believe in the magic of romance and aren't afraid to express your feelings. Your passionate nature attracts kindred spirits who appreciate genuine affection.", zh: "你的心充滿愛和希望！你相信浪漫的魔力，不害怕表達你的感受。你熱情的本性吸引著欣賞真誠情感的靈魂伴侶。" },
+                advice: { en: "Keep your beautiful outlook while staying grounded. The perfect balance of romance and reality awaits you!", zh: "保持你美好的觀點，同時保持腳踏實地。浪漫與現實的完美平衡等待著你！" }
             },
             {
                 scoreRange: [36, 40],
-                title: "👑 Soulmate Magnet",
+                title: { en: "👑 Soulmate Magnet", zh: "👑 靈魂伴侶磁鐵" },
                 icon: "🥰",
-                message: "You are a beacon of love and devotion! Your deep capacity for commitment and genuine romantic spirit makes you irresistible to those seeking true partnership. You don't just believe in soulmates - you embody the qualities that create them.",
-                advice: "Your love will inspire others. Stay true to your romantic heart - your perfect match is drawn to exactly who you are!"
+                message: { en: "You are a beacon of love and devotion! Your deep capacity for commitment and genuine romantic spirit makes you irresistible to those seeking true partnership. You don't just believe in soulmates - you embody the qualities that create them.", zh: "你是愛和奉獻的燈塔！你深厚的承諾能力和真誠的浪漫精神使你對尋求真正伴侶關係的人來說無法抗拒。你不僅相信靈魂伴侶 - 你體現了創造靈魂伴侶的品質。" },
+                advice: { en: "Your love will inspire others. Stay true to your romantic heart - your perfect match is drawn to exactly who you are!", zh: "你的愛會激勵他人。忠於你浪漫的心 - 你的完美伴侶正被你本來的樣子所吸引！" }
             }
         ];
 
@@ -566,6 +566,16 @@
         let quizAnswers = [];
         let selectedOption = -1;
         let totalScore = 0;
+        let shuffledOptions = [];
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
 
         function startQuiz() {
             currentQuestion = 0;
@@ -581,20 +591,27 @@
                 const q = quizQuestions[currentQuestion];
                 const progress = ((currentQuestion) / quizQuestions.length) * 100;
                 
+                // Shuffle options for this question
+                shuffledOptions = shuffleArray(q.options);
+                
+                const progressText = currentLang === 'en' ? `Question ${currentQuestion + 1} of ${quizQuestions.length}` : `問題 ${currentQuestion + 1} / ${quizQuestions.length}`;
+                const prevText = currentLang === 'en' ? 'Previous' : '上一題';
+                const nextText = currentLang === 'en' ? 'Next' : '下一題';
+                
                 container.innerHTML = `
                     <div class="progress-bar">
                         <div class="progress-fill" style="width: ${progress}%"></div>
                     </div>
-                    <div class="progress-text">Question ${currentQuestion + 1} of ${quizQuestions.length}</div>
-                    <h2 class="question">${q.question}</h2>
+                    <div class="progress-text">${progressText}</div>
+                    <h2 class="question">${q.question[currentLang]}</h2>
                     <div class="options">
-                        ${q.options.map((opt, idx) => 
-                            `<div class="option" onclick="selectOption(${idx})" id="option-${idx}">${opt.text}</div>`
+                        ${shuffledOptions.map((opt, idx) => 
+                            `<div class="option" onclick="selectOption(${idx})" id="option-${idx}">${opt.text[currentLang]}</div>`
                         ).join('')}
                     </div>
                     <div class="quiz-controls">
-                        ${currentQuestion > 0 ? '<button class="btn btn-secondary" onclick="previousQuestion()">← Previous</button>' : ''}
-                        <button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn" disabled>Next →</button>
+                        ${currentQuestion > 0 ? `<button class="btn btn-secondary" onclick="previousQuestion()">← ${prevText}</button>` : ''}
+                        <button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn" disabled>${nextText} →</button>
                     </div>
                 `;
                 selectedOption = -1;
@@ -615,10 +632,10 @@
             if (selectedOption === -1) return;
             
             playSound(1000, 200);
-            const answer = quizQuestions[currentQuestion].options[selectedOption];
+            const answer = shuffledOptions[selectedOption];
             quizAnswers.push({
-                question: quizQuestions[currentQuestion].question,
-                answer: answer.text,
+                question: quizQuestions[currentQuestion].question[currentLang],
+                answer: answer.text[currentLang],
                 score: answer.score
             });
             totalScore += answer.score;
@@ -632,8 +649,8 @@
             if (currentQuestion > 0) {
                 playSound(600, 150);
                 currentQuestion--;
-                quizAnswers.pop();
-                totalScore = quizAnswers.reduce((sum, ans) => sum + ans.score, 0);
+                const lastAnswer = quizAnswers.pop();
+                totalScore -= lastAnswer.score;
                 selectedOption = -1;
                 showQuestion();
             }
@@ -649,33 +666,42 @@
             const maxScore = quizQuestions.length * 5;
             const percentage = Math.round((totalScore / maxScore) * 100);
             
+            const scoreText = currentLang === 'en' ? `Your Love Score: ${totalScore}/${maxScore} (${percentage}%)` : `你的愛情分數：${totalScore}/${maxScore} (${percentage}%)`;
+            const adviceLabel = currentLang === 'en' ? 'Advice' : '建議';
+            const dashboardTitle = currentLang === 'en' ? 'Your Love Profile' : '你的愛情檔案';
+            const totalScoreLabel = currentLang === 'en' ? 'Total Score' : '總分';
+            const loveLevelLabel = currentLang === 'en' ? 'Love Level' : '愛情程度';
+            const questionsLabel = currentLang === 'en' ? 'Questions' : '問題';
+            const answersTitle = currentLang === 'en' ? 'Your Answers:' : '你的答案：';
+            const retryBtn = currentLang === 'en' ? 'Take Quiz Again ♥' : '重新測驗 ♥';
+            
             document.getElementById('quiz-content').innerHTML = `
                 <div class="result-container">
                     <div class="result-icon">${result.icon}</div>
-                    <h2>${result.title}</h2>
-                    <div class="result-score">Your Love Score: ${totalScore}/${maxScore} (${percentage}%)</div>
-                    <p>${result.message}</p>
-                    <p><strong>💡 Advice:</strong> ${result.advice}</p>
+                    <h2>${result.title[currentLang]}</h2>
+                    <div class="result-score">${scoreText}</div>
+                    <p>${result.message[currentLang]}</p>
+                    <p><strong>💡 ${adviceLabel}:</strong> ${result.advice[currentLang]}</p>
                     
                     <div class="dashboard">
-                        <div class="dashboard-title">📊 Your Love Profile</div>
+                        <div class="dashboard-title">📊 ${dashboardTitle}</div>
                         <div class="stats-grid">
                             <div class="stat-card">
-                                <div class="stat-label">Total Score</div>
+                                <div class="stat-label">${totalScoreLabel}</div>
                                 <div class="stat-value">${totalScore}</div>
                             </div>
                             <div class="stat-card">
-                                <div class="stat-label">Love Level</div>
+                                <div class="stat-label">${loveLevelLabel}</div>
                                 <div class="stat-value">${percentage}%</div>
                             </div>
                             <div class="stat-card">
-                                <div class="stat-label">Questions</div>
+                                <div class="stat-label">${questionsLabel}</div>
                                 <div class="stat-value">${quizQuestions.length}</div>
                             </div>
                         </div>
                         
                         <div class="answer-review">
-                            <h3 style="color: var(--deep-rose); margin-bottom: 15px;">Your Answers:</h3>
+                            <h3 style="color: var(--deep-rose); margin-bottom: 15px;">${answersTitle}</h3>
                             ${quizAnswers.map((ans, idx) => `
                                 <div class="answer-item">
                                     <strong>Q${idx + 1}:</strong> ${ans.question}<br>
@@ -684,34 +710,10 @@
                             `).join('')}
                         </div>
                     </div>
-
-                    <div class="share-buttons">
-                        <button class="share-btn twitter" onclick="shareTwitter()">Share on Twitter</button>
-                        <button class="share-btn copy" onclick="copyResult()">Copy Result</button>
-                    </div>
                     
-                    <button class="btn btn-primary" style="margin-top: 30px;" onclick="startQuiz()">Take Quiz Again ♥</button>
+                    <button class="btn btn-primary" style="margin-top: 30px;" onclick="startQuiz()">${retryBtn}</button>
                 </div>
             `;
-        }
-
-        function shareTwitter() {
-            const result = quizResults.find(r => 
-                totalScore >= r.scoreRange[0] && totalScore <= r.scoreRange[1]
-            );
-            const text = `I just took the Love Fortune Quiz and got "${result.title}"! 💕 My love score: ${totalScore}/40`;
-            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
-        }
-
-        function copyResult() {
-            const result = quizResults.find(r => 
-                totalScore >= r.scoreRange[0] && totalScore <= r.scoreRange[1]
-            );
-            const text = `Love Fortune Quiz Results\n${result.title}\nScore: ${totalScore}/40\n${result.message}`;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Result copied to clipboard! 💕');
-                playSound(1000, 200);
-            });
         }
 
         // Start the quiz when page loads
